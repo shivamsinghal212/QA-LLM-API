@@ -1,18 +1,20 @@
 from fastapi import APIRouter, UploadFile, File, HTTPException
 import json
+
+from fastapi.responses import JSONResponse
 from src.utils import get_pdf_text
 from src.llm_service import get_llm_chain_obj
-from src.schema import Questions
+from src.schema import Questions, Question
 
 api_routes = APIRouter()
 
 
-@api_routes.post("/api/qa")
+@api_routes.post("/api/qa", response_model=Questions)
 async def answer_questions(
     questions_file: UploadFile = File(...), document_file: UploadFile = File(...)
 ):
     document = None
-    response = []
+    response = Questions(questions=[])
     if not questions_file.content_type == "application/json":
         raise HTTPException(
             status_code=400,
@@ -26,7 +28,7 @@ async def answer_questions(
         )
 
     if document_file.content_type == "application/json":
-        document = json.loads(await document_file.read())
+        document = str(await document_file.read())
     if document_file.content_type == "application/pdf":
         document = get_pdf_text(document_file.file.read())
     if document:
@@ -35,14 +37,12 @@ async def answer_questions(
         all_questions = Questions(questions=questions_data)
 
         for question in all_questions.questions:
-            print(question.question)
             resp = llm_chain(question.question)
-            response.append(
-                {
-                    "question": question.question,
-                    "answer": resp["result"],
-                    "id": question.id,
-                }
+            individual_response = Question(
+                question=question.question,
+                response=resp["result"],
+                id=question.id,
             )
+            response.questions.append(individual_response)
 
     return response

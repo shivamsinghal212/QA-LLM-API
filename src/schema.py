@@ -5,7 +5,7 @@ from typing import List
 class Question(BaseModel):
     id: int
     question: str
-    # response: str
+    response: str = ""
 
 
 class Questions(BaseModel):
