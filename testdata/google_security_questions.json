@@ -1,0 +1,14 @@
+[
+  {
+    "id": 1,
+    "question": "What are the security measures taken by the company?"
+  },
+  {
+    "id": 2,
+    "question": "Does Company encrypt data in transit and at rest?"
+  },
+  {
+    "id": 3,
+    "question": "Does Company have an Incident Response Program?"
+  }
+]
