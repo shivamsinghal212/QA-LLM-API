@@ -2,6 +2,10 @@
 
 QA LLM-API is an Rest API wrapper built on the top of langchain APIs. It exposes a POST api `/api/qa` which takes Question file(json) format and Contextual Data file(json or pdf) built using Python Fast API
 
+## Demo
+
+https://github.com/shivamsinghal212/QA-LLM-API/assets/28619234/65f34036-c4b8-4b61-b17a-90181cf1ac0e
+
 ## Installation
 
 Use docker to setup
